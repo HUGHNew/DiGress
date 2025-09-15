@@ -120,6 +120,9 @@ def main(cfg: DictConfig):
         cfg, model = get_resume(cfg, model_kwargs)
         ckpt_dir = current_ckpt.split('checkpoints')[0]
         os.chdir(ckpt_dir)
+    else:
+        model_class = DiscreteDenoisingDiffusion if cfg.model.type == 'discrete' else LiftedDenoisingDiffusion
+        model = model_class(cfg=cfg, **model_kwargs)
 
     utils.create_folders(cfg)
 
